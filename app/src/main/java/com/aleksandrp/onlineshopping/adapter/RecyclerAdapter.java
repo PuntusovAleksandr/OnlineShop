@@ -1,6 +1,7 @@
 package com.aleksandrp.onlineshopping.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aleksandrp.onlineshopping.R;
+import com.aleksandrp.onlineshopping.activity.FullDetaisActivity;
 import com.aleksandrp.onlineshopping.model.ItemProduct;
+import com.aleksandrp.onlineshopping.utilss.StaticParams;
 import com.aleksandrp.onlineshopping.utilss.UtilsApp;
 import com.squareup.picasso.Picasso;
 
@@ -61,7 +64,9 @@ public class RecyclerAdapter extends
             @Override
             public void onClick(View v) {
                 UtilsApp.disableDoubleClick(v);
-
+                Intent mIntent = new Intent(mContext, FullDetaisActivity.class);
+                mIntent.putExtra(StaticParams.KEY_ID_PRODUCT, mProduct.getListing_id());
+                mContext.startActivity(mIntent);
             }
         });
 

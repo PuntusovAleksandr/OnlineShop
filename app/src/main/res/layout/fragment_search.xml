@@ -49,7 +49,7 @@
             android:layout_height="350dp"
             android:background="@android:color/transparent"
             app:ael_duration="200"
-            app:ael_interpolator="linear"
+            app:ael_interpolator="accelerate"
             app:ael_orientation="vertical">
 
             <EditText

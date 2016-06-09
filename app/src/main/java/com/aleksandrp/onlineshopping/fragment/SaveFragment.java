@@ -48,6 +48,8 @@ public class SaveFragment extends Fragment {
     }
 
     public ArrayList<ItemProduct> getTransaction() {
+
+        // TODO: 09.06.2016 need from db
         ArrayList<ItemProduct> mProducts = new ArrayList<>();
         ItemProduct mProduct;
         for (int i = 0; i < 150; i++) {
