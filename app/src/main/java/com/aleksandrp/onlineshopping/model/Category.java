@@ -1,11 +1,18 @@
 package com.aleksandrp.onlineshopping.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by AleksandrP on 09.06.2016.
  */
 public class Category {
-
+    @SerializedName("category_id")
+    @Expose
     private String category_id;
+
+    @SerializedName("name")
+    @Expose
     private String name;
 
     public Category() {

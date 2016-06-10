@@ -9,4 +9,5 @@
     <string name="title_activity_show_search">List products</string>
     <string name="delete">DELETE</string>
     <string name="save">SAVE</string>
+    <string name="check_internet">Please check your internet connection state</string>
 </resources>

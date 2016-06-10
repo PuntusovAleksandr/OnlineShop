@@ -1,11 +1,14 @@
 package com.aleksandrp.onlineshopping.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +21,26 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aleksandrp.onlineshopping.MainActivity;
 import com.aleksandrp.onlineshopping.R;
 import com.aleksandrp.onlineshopping.activity.ShowSearchActivity;
+import com.aleksandrp.onlineshopping.model.Categories;
+import com.aleksandrp.onlineshopping.model.Category;
+import com.aleksandrp.onlineshopping.retrofit.EtsyService;
 import com.aleksandrp.onlineshopping.utilss.StaticParams;
 import com.aleksandrp.onlineshopping.utilss.UtilsApp;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.GsonConverterFactory;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by AleksandrP on 09.06.2016.
@@ -39,17 +54,20 @@ public class SearchFragment extends Fragment {
     private Button btSubmit;
     private EditText etSearch;
     private List<String> catNames;
+    private List<Category> mCategoryList;
+    private ArrayAdapter<String> adapter;
 
-    public SearchFragment() {
+    private MainActivity mActivity;
 
+    public SearchFragment(Context mContext) {
+        this.mActivity = (MainActivity) mContext;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // create list
-        catNames = getCategoryList();
+        catNames = new ArrayList<String>();
     }
 
     @Override
@@ -57,11 +75,54 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_search, container, false);
-
         initUi(mView);
-
+        loadCategoriesList();
         return mView;
     }
+
+
+    private void loadCategoriesList() {
+
+        mActivity.mProgressBar.setVisibility(View.VISIBLE);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://openapi.etsy.com/v2/taxonomy/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        EtsyService mService = retrofit.create(EtsyService.class);
+        Call mCall = mService.getAllCategory(StaticParams.KEY_API);
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onResponse(Response response) {
+                mActivity.mProgressBar.setVisibility(View.GONE);
+                Categories mCategories = (Categories) response.body();
+                if (mCategories == null) {
+                    //404 or the response cannot be converted to User.
+                    ResponseBody responseBody = response.errorBody();
+                    if (responseBody != null) {
+                        Log.e("error", responseBody.toString());
+                    }
+                } else {
+                    //200 ok
+                    mCategoryList = mCategories.getCategories();
+                    for (int i = 0; i < mCategoryList.size(); i++) {
+                        catNames.add(mCategoryList.get(i).getName());
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                mActivity.mProgressBar.setVisibility(View.GONE);
+                if (t instanceof UnknownHostException) {
+                    UtilsApp.showTopSnackBar(rlCategory, R.string.check_internet);
+                }
+            }
+        });
+    }
+
 
     private void initUi(View mView) {
         mExpandableCategory = (ExpandableRelativeLayout) mView.findViewById(R.id.expandable_category);
@@ -82,7 +143,7 @@ public class SearchFragment extends Fragment {
         ListView listView = (ListView) mView.findViewById(R.id.list_view);
 
         // create ArrayAdapter
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, catNames);
         listView.setAdapter(adapter);
 
@@ -141,29 +202,14 @@ public class SearchFragment extends Fragment {
         } else {
 
             mExpandableCategory.expand();
-            mOpenImage.setImageResource(R.drawable.down_48px);
+            mOpenImage.setImageResource(R.drawable.up_48px);
         }
     }
 
 
     private void closeExpand() {
         mExpandableCategory.collapse();
-        mOpenImage.setImageResource(R.drawable.up_48px);
-    }
-
-
-    public ArrayList<String> getCategoryList() {
-        // TODO: 09.06.2016 load listCategory
-        final ArrayList<String> mStrings = new ArrayList<>();
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 1000; i++) {
-                    mStrings.add("ds" + i + " as" + "\ns");
-                }
-            }
-        });
-        return mStrings;
+        mOpenImage.setImageResource(R.drawable.down_48px);
     }
 
 }

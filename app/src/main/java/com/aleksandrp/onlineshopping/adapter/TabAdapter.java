@@ -19,10 +19,12 @@ import java.util.List;
 public class TabAdapter extends FragmentPagerAdapter {
 
     private int numberOfTabs;
+    private Context mContext;
 
     public TabAdapter(FragmentManager fm, int numberOfTabs, Context mContext) {
         super(fm);
         this.numberOfTabs = numberOfTabs;
+        this.mContext = mContext;
     }
 
 
@@ -31,7 +33,7 @@ public class TabAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return new SearchFragment();
+                return new SearchFragment(mContext);
             case 1:
                 return new SaveFragment();
             default:
