@@ -15,7 +15,10 @@ import retrofit2.http.Query;
  */
 public interface EtsyService {
 
-    @GET("categories")
-    Call<Categories> getAllCategory(@Query("api_key") String api_key);
+    @GET("taxonomy/categories")
+    Call<Categories> getAllCategories(@Query("api_key") String api_key);
+
+    @GET("taxonomy/categories")
+    Call<Categories> getAllProducts(@Query("api_key") String api_key);
 
 }

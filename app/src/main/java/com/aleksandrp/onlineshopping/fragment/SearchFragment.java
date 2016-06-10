@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -86,12 +84,12 @@ public class SearchFragment extends Fragment {
         mActivity.mProgressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://openapi.etsy.com/v2/taxonomy/")
+                .baseUrl("https://openapi.etsy.com/v2/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         EtsyService mService = retrofit.create(EtsyService.class);
-        Call mCall = mService.getAllCategory(StaticParams.KEY_API);
+        Call mCall = mService.getAllCategories(StaticParams.KEY_API);
         mCall.enqueue(new Callback() {
             @Override
             public void onResponse(Response response) {
