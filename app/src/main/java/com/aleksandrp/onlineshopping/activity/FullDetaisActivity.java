@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aleksandrp.onlineshopping.R;
+import com.aleksandrp.onlineshopping.db.ImplDb;
+import com.aleksandrp.onlineshopping.model.ItemProduct;
 import com.aleksandrp.onlineshopping.utilss.StaticParams;
 import com.aleksandrp.onlineshopping.utilss.UtilsApp;
 import com.squareup.picasso.Picasso;
@@ -25,11 +27,13 @@ public class FullDetaisActivity extends AppCompatActivity {
 
     private void initUi() {
 
-        String title = getIntent().getStringExtra(StaticParams.KEY_TITLE);
-        String description = getIntent().getStringExtra(StaticParams.KEY_DESCRIPTION);
-        String price = getIntent().getStringExtra(StaticParams.KEY_PRICE);
-        String urlIcon = getIntent().getStringExtra(StaticParams.KEY_URL_ICON_BIG);
-        boolean isSave = getIntent().getBooleanExtra(StaticParams.KEY_SAVE, false);
+        final int id = getIntent().getIntExtra(StaticParams.KEY_ID_PRODUCT, 0);
+        final String title = getIntent().getStringExtra(StaticParams.KEY_TITLE);
+        final String description = getIntent().getStringExtra(StaticParams.KEY_DESCRIPTION);
+        final String price = getIntent().getStringExtra(StaticParams.KEY_PRICE);
+        final String urlIcon = getIntent().getStringExtra(StaticParams.KEY_URL_ICON);
+        final String urlIcon_big = getIntent().getStringExtra(StaticParams.KEY_URL_ICON_BIG);
+        final boolean isSave = getIntent().getBooleanExtra(StaticParams.KEY_SAVE, false);
 
 
         TextView tv_title = (TextView) findViewById(R.id.title_product);
@@ -42,25 +46,45 @@ public class FullDetaisActivity extends AppCompatActivity {
 
         ImageView icon = (ImageView) findViewById(R.id.icon_product);
         Picasso.with(FullDetaisActivity.this)
-                .load(urlIcon)
-                .placeholder( R.drawable.progress_animation )
+                .load(urlIcon_big)
+                .placeholder(R.drawable.progress_animation)
                 .error(R.mipmap.ic_launcher)
                 .into(icon);
 
-        Button save = (Button) findViewById(R.id.bt_save);
+        final Button save = (Button) findViewById(R.id.bt_save);
         if (isSave) {
-            save.setText(R.string.delete);
-            save.setBackgroundResource(R.color.green);
+            setStatusButton(save, R.string.delete, R.color.red);
         } else {
-            save.setText(R.string.save);
-            save.setBackgroundResource(R.color.red);
+            setStatusButton(save, R.string.save, R.color.green);
         }
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UtilsApp.disableDoubleClick(v);
-                // TODO: 10.06.2016 Save or not in DB
-            }
-        });
+        if (save != null) {
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UtilsApp.disableDoubleClick(v);
+                    if (isSave) {
+                        ImplDb.getInstanceDB(FullDetaisActivity.this).deleteProduct(id);
+                        setStatusButton(save, R.string.save, R.color.green);
+                    } else {
+                        ImplDb.getInstanceDB(FullDetaisActivity.this).putItemProduct(new ItemProduct(
+                                id,
+                                title,
+                                description,
+                                price,
+                                urlIcon,
+                                isSave,
+                                urlIcon_big
+                        ));
+                        setStatusButton(save, R.string.delete, R.color.red);
+                    }
+                    finish();
+                }
+            });
+        }
+    }
+
+    private void setStatusButton(Button mSave, int text, int color) {
+        mSave.setText(text);
+        mSave.setBackgroundResource(color);
     }
 }

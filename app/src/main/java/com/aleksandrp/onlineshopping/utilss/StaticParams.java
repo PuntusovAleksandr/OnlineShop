@@ -15,6 +15,7 @@ public class StaticParams {
     public static final String KEY_TITLE = "key_title";
     public static final String KEY_DESCRIPTION = "key_description";
     public static final String KEY_PRICE = "key_price";
+    public static final String KEY_URL_ICON = "key_icon";
     public static final String KEY_URL_ICON_BIG = "key_big_icon";
     public static final String KEY_SAVE = "key_save";
 

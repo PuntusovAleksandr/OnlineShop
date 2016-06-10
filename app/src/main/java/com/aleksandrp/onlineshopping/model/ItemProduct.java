@@ -14,10 +14,6 @@ public class ItemProduct {
     @Expose
     private String listing_id;
 
-    @SerializedName("category_id")
-    @Expose
-    private String category_id;
-
     @SerializedName("title")
     @Expose
     private String title;
@@ -31,9 +27,6 @@ public class ItemProduct {
     private String price;
 
     private String icon_url_small;
-
-    @SerializedName("isSaved")
-    @Expose
     private boolean isSaved;
 
     @SerializedName("Images")
@@ -46,11 +39,9 @@ public class ItemProduct {
     public ItemProduct() {
     }
 
-    public ItemProduct(String mListing_id, String mCategory_id, String mTitle, String mDescription,
-                       String mPrice, String mIcon_url_small, boolean mIsSaved,
-                       String mIcon_url_big_size) {
-        listing_id = mListing_id;
-        category_id = mCategory_id;
+    public ItemProduct(int mListing_id, String mTitle, String mDescription, String mPrice,
+                       String mIcon_url_small, boolean mIsSaved, String mIcon_url_big_size) {
+        listing_id = mListing_id+"";
         title = mTitle;
         description = mDescription;
         price = mPrice;
@@ -59,44 +50,12 @@ public class ItemProduct {
         icon_url_big_size = mIcon_url_big_size;
     }
 
-    public String getIcon_url_big_size() {
-        return icon_url_big_size;
-    }
-
-    public void setIcon_url_big_size(String mIcon_url_big_size) {
-        icon_url_big_size = mIcon_url_big_size;
-    }
-
-    public ArrayList getImages() {
-        return images;
-    }
-
-    public void setImages(ArrayList mImages) {
-        images = mImages;
-    }
-
-    public boolean isSaved() {
-        return isSaved;
-    }
-
-    public void setSaved(boolean mSaved) {
-        isSaved = mSaved;
-    }
-
     public String getListing_id() {
         return listing_id;
     }
 
     public void setListing_id(String mListing_id) {
         listing_id = mListing_id;
-    }
-
-    public String getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(String mCategory_id) {
-        category_id = mCategory_id;
     }
 
     public String getTitle() {
@@ -129,5 +88,29 @@ public class ItemProduct {
 
     public void setIcon_url_small(String mIcon_url_small) {
         icon_url_small = mIcon_url_small;
+    }
+
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean mSaved) {
+        isSaved = mSaved;
+    }
+
+    public ArrayList<ImageEtsy> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<ImageEtsy> mImages) {
+        images = mImages;
+    }
+
+    public String getIcon_url_big_size() {
+        return icon_url_big_size;
+    }
+
+    public void setIcon_url_big_size(String mIcon_url_big_size) {
+        icon_url_big_size = mIcon_url_big_size;
     }
 }

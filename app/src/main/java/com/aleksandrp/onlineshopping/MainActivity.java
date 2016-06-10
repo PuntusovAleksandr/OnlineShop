@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import com.aleksandrp.onlineshopping.adapter.TabAdapter;
+import com.aleksandrp.onlineshopping.db.ImplDb;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,11 +17,15 @@ public class MainActivity extends AppCompatActivity {
 
     public ProgressBar mProgressBar;
 
+    private ImplDb db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = ImplDb.getInstanceDB(MainActivity.this);
 
         initUi();
 

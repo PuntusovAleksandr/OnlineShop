@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.aleksandrp.onlineshopping.R;
 import com.aleksandrp.onlineshopping.adapter.RecyclerAdapter;
+import com.aleksandrp.onlineshopping.db.ImplDb;
 import com.aleksandrp.onlineshopping.model.ItemProduct;
 
 import java.util.ArrayList;
@@ -18,7 +19,10 @@ import java.util.List;
 /**
  * Created by AleksandrP on 09.06.2016.
  */
-public class SaveFragment extends Fragment {
+public class SaveFragment extends Fragment  {
+
+    private RecyclerAdapter mAdapter;
+    private ArrayList<ItemProduct> mTransactionList;
 
     public SaveFragment() {
         // Required empty public constructor
@@ -38,35 +42,17 @@ public class SaveFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        ArrayList<ItemProduct> mTransactionList = getTransaction();
-        RecyclerAdapter mAdapter =
+        mTransactionList = getTransaction();
+         mAdapter =
                 new RecyclerAdapter(mTransactionList, getActivity());
         mRecyclerView.setAdapter(mAdapter);
-
 
         return mView;
     }
 
     public ArrayList<ItemProduct> getTransaction() {
 
-        // TODO: 09.06.2016 need from db
-        ArrayList<ItemProduct> mProducts = new ArrayList<>();
-        ItemProduct mProduct;
-        for (int i = 0; i < 150; i++) {
-            mProduct = new ItemProduct(
-                    "id " + i,
-                    "category " + i,
-                    "titel " + i,
-                    "description " + i,
-                    "price = " + i,
-                    "url " + i,
-                    true,
-                    "big"
-            );
-            mProducts.add(mProduct);
-        }
-
-        return mProducts;
+        return  ImplDb.getInstanceDB(getActivity()).getAllProducts();
     }
 
 }

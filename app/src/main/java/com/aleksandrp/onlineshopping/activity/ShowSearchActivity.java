@@ -91,8 +91,7 @@ public class ShowSearchActivity extends AppCompatActivity
                         ArrayList<ImageEtsy> mImages = mList.get(i).getImages();
                         ImageEtsy mImageEtsy = mImages.get(0);
                         mItemProducts.add(new ItemProduct(
-                                mList.get(i).getListing_id(),
-                                mList.get(i).getCategory_id(),
+                                Integer.parseInt(mList.get(i).getListing_id()),
                                 mList.get(i).getTitle(),
                                 mList.get(i).getDescription(),
                                 mList.get(i).getPrice(),
