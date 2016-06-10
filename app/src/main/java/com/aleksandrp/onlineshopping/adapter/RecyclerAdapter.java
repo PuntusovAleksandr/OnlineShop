@@ -41,19 +41,11 @@ public class RecyclerAdapter extends
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         final ItemProduct mProduct = mProducts.get(position);
 
-//        if (mProduct.isSaved()) {
-//            holder.save.setText(R.string.delete);
-//            holder.save.setBackgroundResource(R.color.green);
-//        } else {
-//            holder.save.setText(R.string.save);
-//            holder.save.setBackgroundResource(R.color.red);
-//        }
         holder.save.setVisibility(View.GONE);
 
         holder.title.setText(mProduct.getTitle());
         holder.price.setText("$" + mProduct.getPrice());
         holder.description.setText(mProduct.getDescription());
-
 
 
         Picasso.with(mContext)
