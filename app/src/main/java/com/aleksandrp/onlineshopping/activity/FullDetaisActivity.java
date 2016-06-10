@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 public class FullDetaisActivity extends AppCompatActivity {
 
+    private int id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,7 @@ public class FullDetaisActivity extends AppCompatActivity {
 
     private void initUi() {
 
-        final int id = getIntent().getIntExtra(StaticParams.KEY_ID_PRODUCT, 0);
+        id = getIntent().getIntExtra(StaticParams.KEY_ID_PRODUCT, 0);
         final String title = getIntent().getStringExtra(StaticParams.KEY_TITLE);
         final String description = getIntent().getStringExtra(StaticParams.KEY_DESCRIPTION);
         final String price = getIntent().getStringExtra(StaticParams.KEY_PRICE);
@@ -66,16 +68,20 @@ public class FullDetaisActivity extends AppCompatActivity {
                         ImplDb.getInstanceDB(FullDetaisActivity.this).deleteProduct(id);
                         setStatusButton(save, R.string.save, R.color.green);
                     } else {
-                        ImplDb.getInstanceDB(FullDetaisActivity.this).putItemProduct(new ItemProduct(
-                                id,
-                                title,
-                                description,
-                                price,
-                                urlIcon,
-                                isSave,
-                                urlIcon_big
-                        ));
-                        setStatusButton(save, R.string.delete, R.color.red);
+                        if (isInDb()) {
+                            UtilsApp.showTopSnackBar(save, R.string.you_have_product);
+                        }else {
+                            ImplDb.getInstanceDB(FullDetaisActivity.this).putItemProduct(new ItemProduct(
+                                    id,
+                                    title,
+                                    description,
+                                    price,
+                                    urlIcon,
+                                    isSave,
+                                    urlIcon_big
+                            ));
+                            setStatusButton(save, R.string.delete, R.color.red);
+                        }
                     }
                     finish();
                 }
@@ -83,8 +89,15 @@ public class FullDetaisActivity extends AppCompatActivity {
         }
     }
 
+    public boolean isInDb() {
+        return ImplDb.getInstanceDB(FullDetaisActivity.this).isHaveProduct(id);
+    }
+
+
     private void setStatusButton(Button mSave, int text, int color) {
         mSave.setText(text);
         mSave.setBackgroundResource(color);
     }
+
+
 }

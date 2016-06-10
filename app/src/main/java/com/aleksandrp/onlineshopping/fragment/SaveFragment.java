@@ -2,6 +2,7 @@ package com.aleksandrp.onlineshopping.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,15 +15,15 @@ import com.aleksandrp.onlineshopping.db.ImplDb;
 import com.aleksandrp.onlineshopping.model.ItemProduct;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by AleksandrP on 09.06.2016.
  */
-public class SaveFragment extends Fragment  {
+public class SaveFragment extends Fragment {
 
     private RecyclerAdapter mAdapter;
     private ArrayList<ItemProduct> mTransactionList;
+    private RecyclerView mRecyclerView;
 
     public SaveFragment() {
         // Required empty public constructor
@@ -35,24 +36,38 @@ public class SaveFragment extends Fragment  {
         // Inflate the layout for this fragment
         View mView = inflater.inflate(R.layout.fragment_save, container, false);
 
+        SwipeRefreshLayout mSwipeRefreshLayout =
+                (SwipeRefreshLayout) mView.findViewById(R.id.refreshLayout);
+        mSwipeRefreshLayout.setEnabled(false);
 
-        RecyclerView mRecyclerView = (RecyclerView) mView.findViewById(R.id.recycler_last);
+        mRecyclerView = (RecyclerView) mView.findViewById(R.id.recycler_last);
         GridLayoutManager mLayoutManager =
                 new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mTransactionList = getTransaction();
-         mAdapter =
-                new RecyclerAdapter(mTransactionList, getActivity());
-        mRecyclerView.setAdapter(mAdapter);
-
+        update();
         return mView;
     }
 
     public ArrayList<ItemProduct> getTransaction() {
 
-        return  ImplDb.getInstanceDB(getActivity()).getAllProducts();
+        return ImplDb.getInstanceDB(getActivity()).getAllProducts();
     }
 
+
+    @Override
+    public void onResume() {
+        update();
+        super.onResume();
+    }
+
+    public void update() {
+        mTransactionList = getTransaction();
+        if (mAdapter != null) {
+            mAdapter = null;
+        }
+        mAdapter = new RecyclerAdapter(mTransactionList, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+    }
 }

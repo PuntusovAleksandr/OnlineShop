@@ -58,6 +58,26 @@ public class ImplDb implements ValuesDB {
         }
     }
 
+    public boolean isHaveProduct(int mId) {
+        String mStrId = String.valueOf(mId);
+        boolean exists = false;
+        openDb();
+        try {
+            cursor = database.rawQuery("select * from yourTable where _id=%s",
+                    new String[]{mStrId});
+             exists = (cursor.getCount() > 0);
+            cursor.close();
+        }catch (SQLiteException e) {
+            Log.e(ValuesDB.TAG_DB, e.getStackTrace().toString());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return exists;
+        }
+
+
     /**
      * get all products in database
      * @return
@@ -117,4 +137,6 @@ public class ImplDb implements ValuesDB {
         database.delete(ValuesDB.TABLE_PRODUCT,
                 ValuesDB.COLUMN_ID + " = " + mId, null);
     }
+
+
 }

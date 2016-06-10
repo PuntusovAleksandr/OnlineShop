@@ -59,7 +59,7 @@ public class RecyclerAdapter extends
             public void onClick(View v) {
                 UtilsApp.disableDoubleClick(v);
                 Intent mIntent = new Intent(mContext, FullDetaisActivity.class);
-                mIntent.putExtra(StaticParams.KEY_ID_PRODUCT, mProduct.getTitle());
+                mIntent.putExtra(StaticParams.KEY_ID_PRODUCT, Integer.parseInt(mProduct.getListing_id()));
                 mIntent.putExtra(StaticParams.KEY_TITLE, mProduct.getTitle());
                 mIntent.putExtra(StaticParams.KEY_DESCRIPTION, mProduct.getDescription());
                 mIntent.putExtra(StaticParams.KEY_PRICE, mProduct.getPrice());
