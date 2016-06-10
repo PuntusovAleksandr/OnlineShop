@@ -60,7 +60,8 @@ public class SaveFragment extends Fragment {
                     "description " + i,
                     "price = " + i,
                     "url " + i,
-                    true
+                    true,
+                    "big"
             );
             mProducts.add(mProduct);
         }

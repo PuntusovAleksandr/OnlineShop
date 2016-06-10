@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.aleksandrp.onlineshopping.R;
 import com.aleksandrp.onlineshopping.activity.FullDetaisActivity;
+import com.aleksandrp.onlineshopping.model.ImageEtsy;
 import com.aleksandrp.onlineshopping.model.ItemProduct;
 import com.aleksandrp.onlineshopping.utilss.StaticParams;
 import com.aleksandrp.onlineshopping.utilss.UtilsApp;
@@ -37,7 +38,7 @@ public class RecyclerAdapter extends
 
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, int position) {
         final ItemProduct mProduct = mProducts.get(position);
 
         if (mProduct.isSaved()) {
@@ -55,18 +56,35 @@ public class RecyclerAdapter extends
 
 
         Picasso.with(mContext)
-                .load(mProduct.getIcon_url())
+                .load(mProduct.getIcon_url_small())
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(holder.icon);
+
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UtilsApp.disableDoubleClick(v);
+                Intent mIntent = new Intent(mContext, FullDetaisActivity.class);
+                mIntent.putExtra(StaticParams.KEY_TITLE, mProduct.getTitle());
+                mIntent.putExtra(StaticParams.KEY_DESCRIPTION, mProduct.getDescription());
+                mIntent.putExtra(StaticParams.KEY_PRICE, mProduct.getPrice());
+                mIntent.putExtra(StaticParams.KEY_URL_ICON_BIG, mProduct.getIcon_url_big_size());
+                mIntent.putExtra(StaticParams.KEY_SAVE, mProduct.isSaved());
+                mContext.startActivity(mIntent);
+            }
+        });
 
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UtilsApp.disableDoubleClick(v);
-                Intent mIntent = new Intent(mContext, FullDetaisActivity.class);
-                mIntent.putExtra(StaticParams.KEY_ID_PRODUCT, mProduct.getListing_id());
-                mContext.startActivity(mIntent);
+                // TODO: 10.06.2016  save to db or delete
+                if (!mProduct.isSaved()) {
+                    holder.save.setText(R.string.delete);
+                } else {
+                    holder.save.setText(R.string.save);
+                }
             }
         });
 

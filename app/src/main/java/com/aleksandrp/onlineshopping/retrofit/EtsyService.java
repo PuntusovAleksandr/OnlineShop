@@ -21,6 +21,8 @@ public interface EtsyService {
 
     @GET("listings/active")
     Call<Products> getAllProducts(@Query("api_key") String api_key,
-                                  @Query("category") String category);
+                                  @Query("category") String category,
+                                  @Query("includes") String includes
+                                  );
 
 }

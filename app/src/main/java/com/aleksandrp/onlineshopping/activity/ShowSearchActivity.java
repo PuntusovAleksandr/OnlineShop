@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import com.aleksandrp.onlineshopping.R;
 import com.aleksandrp.onlineshopping.adapter.RecyclerAdapter;
 import com.aleksandrp.onlineshopping.model.Categories;
+import com.aleksandrp.onlineshopping.model.ImageEtsy;
 import com.aleksandrp.onlineshopping.model.ItemProduct;
 import com.aleksandrp.onlineshopping.model.Products;
 import com.aleksandrp.onlineshopping.retrofit.EtsyService;
@@ -56,7 +57,7 @@ public class ShowSearchActivity extends AppCompatActivity {
         Retrofit retrofit = StaticParams.getRetrofit();
 
         EtsyService mService = retrofit.create(EtsyService.class);
-        Call mCall = mService.getAllProducts(StaticParams.KEY_API, mCategory);
+        Call mCall = mService.getAllProducts(StaticParams.KEY_API, mCategory, "Images");
         mCall.enqueue(new Callback() {
             @Override
             public void onResponse(Response response) {
@@ -72,14 +73,17 @@ public class ShowSearchActivity extends AppCompatActivity {
                     //200 ok
                     List<ItemProduct> mList = mProducts.getProducts();
                     for (int i = 0; i < mList.size(); i++) {
+                        ArrayList<ImageEtsy> mImages = mList.get(i).getImages();
+                        ImageEtsy  mImageEtsy = mImages.get(0);
                         mItemProducts.add(new ItemProduct(
                                 mList.get(i).getListing_id(),
                                 mList.get(i).getCategory_id(),
                                 mList.get(i).getTitle(),
                                 mList.get(i).getDescription(),
                                 mList.get(i).getPrice(),
-                                mList.get(i).getIcon_url(),
-                                false
+                                mImageEtsy.getUrl_170x135(),
+                                false,
+                                mImageEtsy.getUrl_fullxfull()
                         ));
                     }
                     mAdapter.notifyDataSetChanged();

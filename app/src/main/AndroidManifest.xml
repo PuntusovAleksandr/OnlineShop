@@ -29,7 +29,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.aleksandrp.onlineshopping.MainActivity"/>
         </activity>
-        <activity android:name=".activity.FullDetaisActivity">
+        <activity android:name=".activity.FullDetaisActivity"
+            android:noHistory="true">
         </activity>
     </application>
 

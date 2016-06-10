@@ -3,6 +3,8 @@ package com.aleksandrp.onlineshopping.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by AleksandrP on 09.06.2016.
  */
@@ -28,26 +30,49 @@ public class ItemProduct {
     @Expose
     private String price;
 
-    @SerializedName("icon_url")
-    @Expose
-    private String icon_url;
+    private String icon_url_small;
 
     @SerializedName("isSaved")
     @Expose
     private boolean isSaved;
 
+    @SerializedName("Images")
+    @Expose
+    private ArrayList<ImageEtsy> images;
+
+
+    private String icon_url_big_size;
+
     public ItemProduct() {
     }
 
     public ItemProduct(String mListing_id, String mCategory_id, String mTitle, String mDescription,
-                       String mPrice, String mIcon_url, boolean mIsSaved) {
+                       String mPrice, String mIcon_url_small, boolean mIsSaved,
+                       String mIcon_url_big_size) {
         listing_id = mListing_id;
         category_id = mCategory_id;
         title = mTitle;
         description = mDescription;
         price = mPrice;
-        icon_url = mIcon_url;
+        icon_url_small = mIcon_url_small;
         isSaved = mIsSaved;
+        icon_url_big_size = mIcon_url_big_size;
+    }
+
+    public String getIcon_url_big_size() {
+        return icon_url_big_size;
+    }
+
+    public void setIcon_url_big_size(String mIcon_url_big_size) {
+        icon_url_big_size = mIcon_url_big_size;
+    }
+
+    public ArrayList getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList mImages) {
+        images = mImages;
     }
 
     public boolean isSaved() {
@@ -98,11 +123,11 @@ public class ItemProduct {
         price = mPrice;
     }
 
-    public String getIcon_url() {
-        return icon_url;
+    public String getIcon_url_small() {
+        return icon_url_small;
     }
 
-    public void setIcon_url(String mIcon_url) {
-        icon_url = mIcon_url;
+    public void setIcon_url_small(String mIcon_url_small) {
+        icon_url_small = mIcon_url_small;
     }
 }
