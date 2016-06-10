@@ -6,4 +6,5 @@
     <dimen name="four">4dp</dimen>
     <dimen name="text_medium">16sp</dimen>
     <dimen name="big_size">20sp</dimen>
+    <dimen name="midle_dimention">8dp</dimen>
 </resources>
