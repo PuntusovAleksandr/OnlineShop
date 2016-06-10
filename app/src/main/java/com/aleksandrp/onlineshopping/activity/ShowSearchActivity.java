@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.aleksandrp.onlineshopping.R;
 import com.aleksandrp.onlineshopping.adapter.RecyclerAdapter;
@@ -101,6 +102,7 @@ public class ShowSearchActivity extends AppCompatActivity
                         ));
                     }
                     mAdapter.notifyDataSetChanged();
+                    Toast.makeText(ShowSearchActivity.this, "Page" + currentPage, Toast.LENGTH_SHORT).show();
                     currentPage++;
                 }
             }
@@ -166,8 +168,6 @@ public class ShowSearchActivity extends AppCompatActivity
                     }
                 }
             };
-
-
 
 
     @Override
