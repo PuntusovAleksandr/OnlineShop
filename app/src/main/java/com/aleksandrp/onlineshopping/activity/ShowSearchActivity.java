@@ -3,6 +3,7 @@ package com.aleksandrp.onlineshopping.activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,11 +34,17 @@ import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ShowSearchActivity extends AppCompatActivity {
+public class ShowSearchActivity extends AppCompatActivity
+        implements SwipeRefreshLayout.OnRefreshListener {
 
     private ProgressBar mProgressBar;
     private ArrayList<ItemProduct> mItemProducts;
     private RecyclerAdapter mAdapter;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private GridLayoutManager mLayoutManager;
+    private int currentPage = 1;
+    private boolean mIsLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +63,18 @@ public class ShowSearchActivity extends AppCompatActivity {
 
         Retrofit retrofit = StaticParams.getRetrofit();
 
+        mIsLoading = true;
+        mSwipeRefreshLayout.setRefreshing(true);
+
         EtsyService mService = retrofit.create(EtsyService.class);
-        Call mCall = mService.getAllProducts(StaticParams.KEY_API, mCategory, "Images");
+        Call mCall = mService.getAllProducts(StaticParams.KEY_API, mCategory, "Images", currentPage);
         mCall.enqueue(new Callback() {
             @Override
             public void onResponse(Response response) {
+
+                mIsLoading = false;
+                mSwipeRefreshLayout.setRefreshing(false);
+
                 mProgressBar.setVisibility(View.GONE);
                 Products mProducts = (Products) response.body();
                 if (mProducts == null) {
@@ -74,7 +88,7 @@ public class ShowSearchActivity extends AppCompatActivity {
                     List<ItemProduct> mList = mProducts.getProducts();
                     for (int i = 0; i < mList.size(); i++) {
                         ArrayList<ImageEtsy> mImages = mList.get(i).getImages();
-                        ImageEtsy  mImageEtsy = mImages.get(0);
+                        ImageEtsy mImageEtsy = mImages.get(0);
                         mItemProducts.add(new ItemProduct(
                                 mList.get(i).getListing_id(),
                                 mList.get(i).getCategory_id(),
@@ -87,11 +101,15 @@ public class ShowSearchActivity extends AppCompatActivity {
                         ));
                     }
                     mAdapter.notifyDataSetChanged();
+                    currentPage++;
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
+                mIsLoading = false;
+                mSwipeRefreshLayout.setRefreshing(false);
+
                 mProgressBar.setVisibility(View.GONE);
                 if (t instanceof UnknownHostException) {
                     UtilsApp.showTopSnackBar(mProgressBar, R.string.check_internet);
@@ -103,10 +121,15 @@ public class ShowSearchActivity extends AppCompatActivity {
 
     private void initUi() {
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler_last);
-        GridLayoutManager mLayoutManager =
+        mLayoutManager =
                 new GridLayoutManager(ShowSearchActivity.this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView.setOnScrollListener(mRecyclerViewOnScrollListener);
+
 
         mItemProducts = new ArrayList<>();
         mAdapter = new RecyclerAdapter(mItemProducts, ShowSearchActivity.this);
@@ -121,5 +144,36 @@ public class ShowSearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    private RecyclerView.OnScrollListener mRecyclerViewOnScrollListener =
+            new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
 
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+
+                    if (!mIsLoading) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                                && firstVisibleItemPosition >= 0) {
+                            loadProducts(getIntent().getStringExtra(StaticParams.KEY_CATEGORY));
+                        }
+                    }
+                }
+            };
+
+
+
+
+    @Override
+    public void onRefresh() {
+        mItemProducts.clear();
+        currentPage = 1;
+        loadProducts(getIntent().getStringExtra(StaticParams.KEY_CATEGORY));
+    }
 }

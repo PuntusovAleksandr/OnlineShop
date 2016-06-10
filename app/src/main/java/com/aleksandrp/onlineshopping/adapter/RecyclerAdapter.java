@@ -38,7 +38,7 @@ public class RecyclerAdapter extends
 
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
         final ItemProduct mProduct = mProducts.get(position);
 
         if (mProduct.isSaved()) {
@@ -57,7 +57,7 @@ public class RecyclerAdapter extends
 
         Picasso.with(mContext)
                 .load(mProduct.getIcon_url_small())
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder( R.drawable.progress_animation )
                 .error(R.mipmap.ic_launcher)
                 .into(holder.icon);
 
@@ -72,19 +72,6 @@ public class RecyclerAdapter extends
                 mIntent.putExtra(StaticParams.KEY_URL_ICON_BIG, mProduct.getIcon_url_big_size());
                 mIntent.putExtra(StaticParams.KEY_SAVE, mProduct.isSaved());
                 mContext.startActivity(mIntent);
-            }
-        });
-
-        holder.save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UtilsApp.disableDoubleClick(v);
-                // TODO: 10.06.2016  save to db or delete
-                if (!mProduct.isSaved()) {
-                    holder.save.setText(R.string.delete);
-                } else {
-                    holder.save.setText(R.string.save);
-                }
             }
         });
 

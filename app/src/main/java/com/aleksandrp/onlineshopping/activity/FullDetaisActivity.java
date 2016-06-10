@@ -43,7 +43,7 @@ public class FullDetaisActivity extends AppCompatActivity {
         ImageView icon = (ImageView) findViewById(R.id.icon_product);
         Picasso.with(FullDetaisActivity.this)
                 .load(urlIcon)
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder( R.drawable.progress_animation )
                 .error(R.mipmap.ic_launcher)
                 .into(icon);
 
