@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 
 import com.aleksandrp.onlineshopping.adapter.TabAdapter;
 import com.aleksandrp.onlineshopping.db.ImplDb;
+import com.aleksandrp.onlineshopping.utilss.UtilsApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        UtilsApp.checkInternet(MainActivity.this);
         db = ImplDb.getInstanceDB(MainActivity.this);
-
         initUi();
-
     }
 
     private void initUi() {

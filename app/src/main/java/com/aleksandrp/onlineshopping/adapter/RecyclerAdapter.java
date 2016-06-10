@@ -58,15 +58,17 @@ public class RecyclerAdapter extends
             @Override
             public void onClick(View v) {
                 UtilsApp.disableDoubleClick(v);
-                Intent mIntent = new Intent(mContext, FullDetaisActivity.class);
-                mIntent.putExtra(StaticParams.KEY_ID_PRODUCT, Integer.parseInt(mProduct.getListing_id()));
-                mIntent.putExtra(StaticParams.KEY_TITLE, mProduct.getTitle());
-                mIntent.putExtra(StaticParams.KEY_DESCRIPTION, mProduct.getDescription());
-                mIntent.putExtra(StaticParams.KEY_PRICE, mProduct.getPrice());
-                mIntent.putExtra(StaticParams.KEY_URL_ICON, mProduct.getIcon_url_small());
-                mIntent.putExtra(StaticParams.KEY_URL_ICON_BIG, mProduct.getIcon_url_big_size());
-                mIntent.putExtra(StaticParams.KEY_SAVE, mProduct.isSaved());
-                mContext.startActivity(mIntent);
+                if (UtilsApp.checkInternet(mContext)) {
+                    Intent mIntent = new Intent(mContext, FullDetaisActivity.class);
+                    mIntent.putExtra(StaticParams.KEY_ID_PRODUCT, Integer.parseInt(mProduct.getListing_id()));
+                    mIntent.putExtra(StaticParams.KEY_TITLE, mProduct.getTitle());
+                    mIntent.putExtra(StaticParams.KEY_DESCRIPTION, mProduct.getDescription());
+                    mIntent.putExtra(StaticParams.KEY_PRICE, mProduct.getPrice());
+                    mIntent.putExtra(StaticParams.KEY_URL_ICON, mProduct.getIcon_url_small());
+                    mIntent.putExtra(StaticParams.KEY_URL_ICON_BIG, mProduct.getIcon_url_big_size());
+                    mIntent.putExtra(StaticParams.KEY_SAVE, mProduct.isSaved());
+                    mContext.startActivity(mIntent);
+                }
             }
         });
 

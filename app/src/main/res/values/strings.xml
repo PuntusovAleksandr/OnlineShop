@@ -11,4 +11,5 @@
     <string name="save">SAVE</string>
     <string name="check_internet">Please check your internet connection state</string>
     <string name="you_have_product">You have this product!</string>
+    <string name="bad_connection">No Internet connection available. \nPlease check your connection settings.</string>
 </resources>

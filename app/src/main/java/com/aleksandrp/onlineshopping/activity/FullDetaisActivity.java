@@ -47,6 +47,8 @@ public class FullDetaisActivity extends AppCompatActivity {
         tv_price.setText("Prise " + price);
 
         ImageView icon = (ImageView) findViewById(R.id.icon_product);
+
+        UtilsApp.checkInternet(FullDetaisActivity.this);
         Picasso.with(FullDetaisActivity.this)
                 .load(urlIcon_big)
                 .placeholder(R.drawable.progress_animation)

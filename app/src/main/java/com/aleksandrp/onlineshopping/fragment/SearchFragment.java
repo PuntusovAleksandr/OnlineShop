@@ -173,20 +173,22 @@ public class SearchFragment extends Fragment {
         @Override
         public void onClick(View v) {
             UtilsApp.disableDoubleClick(v);
-            switch (v.getId()) {
-                case R.id.rl_category:
-                    visibleInvisible();
-                    break;
-                case R.id.bt_submit:
-                    String category = mTextView.getText().toString();
-                    if (category.equals(getActivity().getString(R.string.select_category))) {
-                        UtilsApp.showTopSnackBar(v, R.string.make_your_choice);
-                    } else {
-                        Intent mIntent = new Intent(getActivity(), ShowSearchActivity.class);
-                        mIntent.putExtra(StaticParams.KEY_CATEGORY, category);
-                        getActivity().startActivity(mIntent);
-                    }
-                    break;
+            if ( UtilsApp.checkInternet(getActivity())) {
+                switch (v.getId()) {
+                    case R.id.rl_category:
+                        visibleInvisible();
+                        break;
+                    case R.id.bt_submit:
+                        String category = mTextView.getText().toString();
+                        if (category.equals(getActivity().getString(R.string.select_category))) {
+                            UtilsApp.showTopSnackBar(v, R.string.make_your_choice);
+                        } else {
+                            Intent mIntent = new Intent(getActivity(), ShowSearchActivity.class);
+                            mIntent.putExtra(StaticParams.KEY_CATEGORY, category);
+                            getActivity().startActivity(mIntent);
+                        }
+                        break;
+                }
             }
         }
     };
