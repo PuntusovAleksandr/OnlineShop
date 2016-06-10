@@ -52,6 +52,13 @@
             app:ael_interpolator="accelerate"
             app:ael_orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
             <EditText
                 android:id="@+id/et_search"
                 android:layout_width="match_parent"

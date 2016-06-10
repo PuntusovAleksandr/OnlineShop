@@ -1,16 +1,39 @@
 package com.aleksandrp.onlineshopping.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by AleksandrP on 09.06.2016.
  */
 public class ItemProduct {
 
+    @SerializedName("listing_id")
+    @Expose
     private String listing_id;
+
+    @SerializedName("category_id")
+    @Expose
     private String category_id;
+
+    @SerializedName("title")
+    @Expose
     private String title;
+
+    @SerializedName("description")
+    @Expose
     private String description;
+
+    @SerializedName("price")
+    @Expose
     private String price;
+
+    @SerializedName("icon_url")
+    @Expose
     private String icon_url;
+
+    @SerializedName("isSaved")
+    @Expose
     private boolean isSaved;
 
     public ItemProduct() {

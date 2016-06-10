@@ -83,10 +83,7 @@ public class SearchFragment extends Fragment {
 
         mActivity.mProgressBar.setVisibility(View.VISIBLE);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://openapi.etsy.com/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = StaticParams.getRetrofit();
 
         EtsyService mService = retrofit.create(EtsyService.class);
         Call mCall = mService.getAllCategories(StaticParams.KEY_API);

@@ -2,6 +2,7 @@ package com.aleksandrp.onlineshopping.retrofit;
 
 import com.aleksandrp.onlineshopping.model.Categories;
 import com.aleksandrp.onlineshopping.model.Category;
+import com.aleksandrp.onlineshopping.model.Products;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ public interface EtsyService {
     @GET("taxonomy/categories")
     Call<Categories> getAllCategories(@Query("api_key") String api_key);
 
-    @GET("taxonomy/categories")
-    Call<Categories> getAllProducts(@Query("api_key") String api_key);
+    @GET("listings/active")
+    Call<Products> getAllProducts(@Query("api_key") String api_key,
+                                  @Query("category") String category);
 
 }
