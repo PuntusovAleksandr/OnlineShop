@@ -4,12 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
-
 import com.aleksandrp.onlineshopping.fragment.SaveFragment;
 import com.aleksandrp.onlineshopping.fragment.SearchFragment;
-import com.aleksandrp.onlineshopping.model.Category;
-
-import java.util.List;
 
 
 /**
